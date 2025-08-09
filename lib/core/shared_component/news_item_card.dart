@@ -1,9 +1,6 @@
-
-import 'package:flutter/material.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:khatibalamyfluttertask/core/config/color/app_colors.dart';
+import 'package:khatibalamyfluttertask/core/constants/assets.dart';
 
 import '../utils/date_and_time_formatter.dart';
 
@@ -19,7 +16,7 @@ class NewsItemCard extends StatelessWidget {
     Key? key,
     required this.title,
     required this.description,
-    this.imageUrl,
+    required this.imageUrl,
     required this.publishedAt,
     required this.sourceName,
     required this.onClick,
@@ -27,7 +24,6 @@ class NewsItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     String? formattedDate = dateAndTimeFormatter(publishedAt).first;
 
     return Container(
@@ -37,7 +33,7 @@ class NewsItemCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).colorScheme.surfaceTint.withAlpha(20),
-            blurRadius: 5,
+            blurRadius: 5.r,
             offset: Offset(0, 2),
           ),
         ],
@@ -45,24 +41,25 @@ class NewsItemCard extends StatelessWidget {
       child: Column(
         children: [
           InkWell(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             onTap: onClick,
             child: Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: imageUrl != null
-                      ? Image.network(
-                    imageUrl!,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  )
-                      : Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.grey[300],
-                  ),
+                  borderRadius: BorderRadius.circular(12.r),
+                  child:
+                      imageUrl != null
+                          ? Image.network(
+                            imageUrl!,
+                            width: 100.r,
+                            height: 100.r,
+                            fit: BoxFit.cover,
+                          )
+                          : Image.asset(
+                            Assets.Noimage,
+                            width: 100.r,
+                            height: 100.r,
+                          ),
                 ),
                 Expanded(
                   child: Padding(
@@ -71,7 +68,7 @@ class NewsItemCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 20,
+                          height: 20.h,
                           child: Text(
                             title,
                             style: Theme.of(context).textTheme.titleMedium,
@@ -79,7 +76,7 @@ class NewsItemCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const Divider(height: 16),
+                        Divider(height: 16.h),
                         Text(
                           description,
                           style: Theme.of(context).textTheme.bodyMedium,
@@ -96,11 +93,11 @@ class NewsItemCard extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
-              borderRadius: const BorderRadius.vertical(
-                bottom: Radius.circular(12),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(12.r),
               ),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 8.r),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -112,12 +109,12 @@ class NewsItemCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                  Text(
-                    formattedDate,
-                    style: Theme.of(context).textTheme.labelSmall,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                Text(
+                  formattedDate,
+                  style: Theme.of(context).textTheme.labelSmall,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
           ),
@@ -126,4 +123,3 @@ class NewsItemCard extends StatelessWidget {
     );
   }
 }
-

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:khatibalamyfluttertask/core/constants/app_strings.dart';
+import 'package:provider/provider.dart';
 
 import 'app/app.dart';
+import 'core/di/providers.dart';
 
-void main() {
-  runApp(const NewsNowApp());
-  print(String.fromEnvironment(AppStrings.apiKey));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final providers = await Providers.getProviders();
+
+  runApp(MultiProvider(providers: providers, child: const NewsNowApp()));
 }
-

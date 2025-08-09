@@ -1,7 +1,79 @@
-
-
+import 'package:khatibalamyfluttertask/core/constants/app_strings.dart';
+import 'package:khatibalamyfluttertask/domain/usecase/search_news_usecase.dart';
+import 'package:khatibalamyfluttertask/feature_search/news_search_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../data/local/news_local_datasource.dart';
+import '../../data/local/news_local_datasource_impl.dart';
+import '../../data/remote/news_remote_datasource.dart';
+import '../../data/remote/news_remote_datasource_impl.dart';
+import '../../data/repository/news_repository_impl.dart';
+import '../../domain/usecase/cache_query_usecase.dart';
+import '../../domain/usecase/get_cached_query_usecase.dart';
+import '../network/dio_client.dart';
+import '../prefs/shared_preference_manager.dart';
 
 abstract class Providers {
-  static const List<SingleChildWidget> providers = [];
+  static Future<List<SingleChildWidget>> getProviders() async {
+
+    final sharedPrefs = await SharedPreferences.getInstance();
+
+    return [
+
+      /// Dio Client
+      Provider<DioClient>(
+        create: (_) => DioClient(baseUrl: 'https://newsapi.org'),
+      ),
+
+      /// Local Data Source
+      Provider<NewsLocalDataSource>(
+        create: (context) => NewsLocalDataSourceImpl(prefs: sharedPrefs),
+      ),
+
+      /// Remote Data Source
+      Provider<NewsRemoteDataSource>(
+        create:
+            (context) => NewsRemoteDataSourceImpl(
+              dio: context.read<DioClient>().dio,
+              apiKey: const String.fromEnvironment(AppStrings.apiKey),
+            ),
+      ),
+
+      /// Repository
+      Provider<NewsRepositoryImpl>(
+        create:
+            (context) => NewsRepositoryImpl(
+              localDataSource: context.read<NewsLocalDataSource>(),
+              remoteDataSource: context.read<NewsRemoteDataSource>(),
+            ),
+      ),
+
+      /// Use Cases
+      Provider<SearchNewsUseCase>(
+        create:
+            (context) => SearchNewsUseCase(context.read<NewsRepositoryImpl>()),
+      ),
+      Provider<GetCachedQueryUseCase>(
+        create:
+            (context) =>
+                GetCachedQueryUseCase(context.read<NewsRepositoryImpl>()),
+      ),
+      Provider<CacheQueryUseCase>(
+        create:
+            (context) => CacheQueryUseCase(context.read<NewsRepositoryImpl>()),
+      ),
+
+      /// Provider
+      ChangeNotifierProvider<NewsProvider>(
+        create:
+            (context) => NewsProvider(
+              searchNewsUseCase: context.read<SearchNewsUseCase>(),
+              getCachedQueryUseCase: context.read<GetCachedQueryUseCase>(),
+              cacheQuery: context.read<CacheQueryUseCase>(),
+            ),
+      ),
+    ];
+  }
 }

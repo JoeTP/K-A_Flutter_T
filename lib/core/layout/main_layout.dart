@@ -3,8 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:khatibalamyfluttertask/app/route/AppRoutes.dart';
 import 'package:khatibalamyfluttertask/core/config/color/app_colors.dart';
 import 'package:khatibalamyfluttertask/core/shared_component/app_bar.dart';
+import 'package:khatibalamyfluttertask/core/shared_component/news_item_card.dart';
 import 'package:khatibalamyfluttertask/core/utils/extensions/padding.dart';
+import 'package:khatibalamyfluttertask/domain/model/news_article.dart';
+import 'package:provider/provider.dart';
 
+import '../../feature_search/news_search_provider.dart';
 import '../shared_component/search_field.dart';
 
 class MainLayout extends StatelessWidget {
@@ -12,36 +16,40 @@ class MainLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<NewsProvider>(context);
+
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true, // stays visible at top when collapsed
-            floating: false, // true makes it appear when you scroll up a little
-            snap: false, // only works if floating is true
-            expandedHeight: kToolbarHeight + 50.h, // height when expanded
-            backgroundColor: AppColors.white,
-            flexibleSpace: FlexibleSpaceBar(
-              centerTitle: true,
-              title: Column(
-                children: [
-                  Text("News Now"),
-                  AppSearchField(hint: "Search News..."),
-                ],
+      appBar: AppBar(title: const Text('News Search')),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextField(
+              decoration: const InputDecoration(
+                labelText: 'Search News...',
+                border: OutlineInputBorder(),
               ),
+              onChanged: (value) => provider.searchNews(value),
             ),
-
-
           ),
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-              (context, index) => ListTile(
-            leading: CircleAvatar(child: Text('${index + 1}')),
-            title: Text('Item ${index + 1}'),
+          Expanded(
+            child: provider.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+              itemCount: provider.articles.length,
+              itemBuilder: (context, index) {
+                NewsArticle article = provider.articles[index];
+                return NewsItemCard(
+                  imageUrl: article.urlToImage,
+                  title: article.title,
+                 description: article.description,
+                onClick: (){},
+                publishedAt: "123",
+                sourceName: "BBC",);
+              },
+            ),
           ),
-          childCount: 30,
-        ),
-      )
         ],
       ),
     );
