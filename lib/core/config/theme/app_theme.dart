@@ -4,6 +4,10 @@ import 'package:khatibalamyfluttertask/core/config/color/app_colors.dart';
 
 abstract class AppTheme {
   static ThemeData lightTheme = ThemeData.light().copyWith(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: AppColors.base,
+      surface: AppColors.white,
+    ),
     primaryColor: AppColors.base,
     inputDecorationTheme: DefaultInputDecoration(),
     appBarTheme: DefaultAppBarTheme(),

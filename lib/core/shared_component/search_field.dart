@@ -6,10 +6,9 @@ class AppSearchField extends StatelessWidget {
   final TextEditingController controller = TextEditingController();
   final Function(String)? onChanged;
   final Function()? onTap;
-  int maxLength;
+  final int maxLength;
   final bool readOnly;
-
-  String hint;
+  final String hint;
 
   AppSearchField({
     super.key,
@@ -23,7 +22,7 @@ class AppSearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height:  56.h,
+      height: 56.h,
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
