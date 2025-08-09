@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:khatibalamyfluttertask/core/shared_component/search_field.dart';
+import 'package:khatibalamyfluttertask/core/utils/extensions/padding.dart';
 
-class Appbar extends StatelessWidget implements PreferredSizeWidget {
-  const Appbar({super.key});
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const HomeAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar();
+    return AppBar(
+      toolbarHeight: kToolbarHeight + 32.h,
+      title: Column(
+        children: [
+          Text("News Now"),
+          AppSearchField(
+            hint: "Search News...",
+            onChanged: (v) {},
+          ).paddingOnly(bottom: 12.h),
+        ],
+      ),
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khatibalamyfluttertask/core/layout/main_layout.dart';
 import 'package:khatibalamyfluttertask/core/di/providers.dart';
+import 'package:khatibalamyfluttertask/feature_search/news_search_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'AppRoutes.dart';
@@ -11,15 +12,7 @@ class RouteGenerator {
       case AppRoutes.root:
         return MaterialPageRoute(
           builder:
-              (_) => MainLayout(),
-        );
-        case AppRoutes.search:
-        return MaterialPageRoute(
-          builder:
-              (_) => MultiProvider(
-                providers: Providers.providers,
-                child: MainLayout(),
-              ),
+              (_) => SafeArea(child: MainLayout()),
         );
       default:
         return MaterialPageRoute(
