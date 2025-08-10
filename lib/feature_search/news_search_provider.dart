@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:khatibalamyfluttertask/domain/usecase/get_headlines_usecase.dart';
-
 import '../core/utils/debouncer.dart';
 import '../domain/model/news_article.dart';
 import '../domain/usecase/cache_query_usecase.dart';
@@ -18,6 +17,7 @@ class NewsProvider extends ChangeNotifier {
   bool isLoading = false;
   String errorMessage = '';
   String lastQuery = '';
+  bool isSearchMode = false;
 
   NewsProvider({
     required this.searchNewsUseCase,
@@ -39,6 +39,7 @@ class NewsProvider extends ChangeNotifier {
   }
 
   void loadHeadlines() async {
+    isSearchMode = false;
     isLoading = true;
     notifyListeners();
     try {
@@ -52,7 +53,11 @@ class NewsProvider extends ChangeNotifier {
 
   void searchNews(String query, {bool save = true}) {
     debouncer.run(() async {
-      if (query.isEmpty) return;
+      if (query.isEmpty) {
+        loadHeadlines();
+        return;
+      }
+      isSearchMode = true;
       isLoading = true;
       errorMessage = '';
       notifyListeners();

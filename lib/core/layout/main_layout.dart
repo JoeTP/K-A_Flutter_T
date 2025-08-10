@@ -46,33 +46,32 @@ class _MainLayoutState extends State<MainLayout> {
             onChanged: provider.searchNews,
           ).paddingSymmetric(horizontal: 12.r).paddingOnly(top: 12.h),
           Expanded(
-            child:
-                provider.isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : provider.articles.isEmpty
-                    ? Center(
-                      child: Image.asset(Assets.Nodata).size(200.h, 200.w),
-                    )
-                    : ListView.separated(
-                      padding: EdgeInsets.only(bottom: 12.h, top: 2.h),
-                      itemCount: provider.articles.length,
-                      itemBuilder: (context, index) {
-                        final article = provider.articles[index];
-                        final formattedDate =
-                            dateAndTimeFormatter(article.publishedAt).first;
+            child: provider.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : provider.isSearchMode && provider.articles.isEmpty
+                ? Center(
+              child: Image.asset(Assets.Nodata).size(200.h, 200.w),
+            )
+                : ListView.separated(
+              padding: EdgeInsets.only(bottom: 12.h, top: 2.h),
+              itemCount: provider.articles.length,
+              itemBuilder: (context, index) {
+                final article = provider.articles[index];
+                final formattedDate =
+                    dateAndTimeFormatter(article.publishedAt).first;
 
-                        return NewsItemCard(
-                          imageUrl: article.urlToImage,
-                          title: article.title,
-                          description: article.description,
-                          publishedAt: formattedDate,
-                          sourceName: article.sourceName,
-                          onClick: () async => openInBrowser(article.url),
-                        ).paddingSymmetric(horizontal: 12.w);
-                      },
-                      separatorBuilder: (_, __) => Gap(12.h),
-                    ),
-          ),
+                return NewsItemCard(
+                  imageUrl: article.urlToImage,
+                  title: article.title,
+                  description: article.description,
+                  publishedAt: formattedDate,
+                  sourceName: article.sourceName,
+                  onClick: () async => openInBrowser(article.url),
+                ).paddingSymmetric(horizontal: 12.w);
+              },
+              separatorBuilder: (_, __) => Gap(12.h),
+            ),
+          )
         ],
       ),
     );
