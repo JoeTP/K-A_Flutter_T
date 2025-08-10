@@ -30,7 +30,7 @@ class NewsProvider extends ChangeNotifier {
 
   Future<void> _loadLastQuery() async {
     final query = await getCachedQueryUseCase(null);
-    if (query != null && query.isNotEmpty) {
+    if (query != null) {
       lastQuery = query;
       searchNews(query, save: false);
     } else {
