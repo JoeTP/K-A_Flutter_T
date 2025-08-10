@@ -7,11 +7,15 @@ abstract class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.base,
       surface: AppColors.white,
+      surfaceContainer: AppColors.gold
     ),
     primaryColor: AppColors.base,
     inputDecorationTheme: DefaultInputDecoration(),
     appBarTheme: DefaultAppBarTheme(),
     scaffoldBackgroundColor: AppColors.lightGrey,
+    progressIndicatorTheme: ProgressIndicatorThemeData(
+      color: AppColors.gold
+    )
   );
 }
 

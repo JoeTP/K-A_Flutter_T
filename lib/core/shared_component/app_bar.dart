@@ -12,16 +12,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: kToolbarHeight + 32.h,
-      title: Column(
-        children: [
-          Text("News Now"),
-          AppSearchField(
-            hint: "Search News...",
-            onChanged: (v) {},
-          ).paddingOnly(bottom: 12.h),
-        ],
-      ),
     );
   }
 }

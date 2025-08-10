@@ -1,4 +1,5 @@
 import 'package:khatibalamyfluttertask/core/constants/app_strings.dart';
+import 'package:khatibalamyfluttertask/domain/usecase/get_headlines_usecase.dart';
 import 'package:khatibalamyfluttertask/domain/usecase/search_news_usecase.dart';
 import 'package:khatibalamyfluttertask/feature_search/news_search_provider.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ abstract class Providers {
 
       /// Dio Client
       Provider<DioClient>(
-        create: (_) => DioClient(baseUrl: 'https://newsapi.org'),
+        create: (_) => DioClient(baseUrl: AppStrings.baseUrl),
       ),
 
       /// Local Data Source
@@ -52,6 +53,10 @@ abstract class Providers {
       ),
 
       /// Use Cases
+      Provider<GetHeadlinesUseCase>(
+        create:
+            (context) => GetHeadlinesUseCase(context.read<NewsRepositoryImpl>()),
+      ),
       Provider<SearchNewsUseCase>(
         create:
             (context) => SearchNewsUseCase(context.read<NewsRepositoryImpl>()),
@@ -73,6 +78,7 @@ abstract class Providers {
               searchNewsUseCase: context.read<SearchNewsUseCase>(),
               getCachedQueryUseCase: context.read<GetCachedQueryUseCase>(),
               cacheQuery: context.read<CacheQueryUseCase>(),
+              getHeadlinesUseCase: context.read<GetHeadlinesUseCase>(),
             ),
       ),
     ];

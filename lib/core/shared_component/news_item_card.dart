@@ -53,7 +53,7 @@ class NewsItemCard extends StatelessWidget {
                         imageUrl!,
                         cacheSize: 100,
                       ).clipOnly(topLeft: 12.r).size(100.h, 100.w)
-                      : Image.asset(Assets.Noimage, fit:  BoxFit.cover,).size(100.h, 100.w),
+                      : Image.asset(Assets.Noimage, fit:  BoxFit.cover,).clipOnly(topLeft: 12.r).size(100.h, 100.w),
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.all(10.r),
@@ -84,7 +84,7 @@ class NewsItemCard extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.surfaceContainer,
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(12.r),
                   ),

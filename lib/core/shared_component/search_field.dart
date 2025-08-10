@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:khatibalamyfluttertask/core/config/color/app_colors.dart';
 
 class AppSearchField extends StatelessWidget {
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController controller;
   final Function(String)? onChanged;
   final Function()? onTap;
   final int maxLength;
@@ -12,6 +12,7 @@ class AppSearchField extends StatelessWidget {
 
   AppSearchField({
     super.key,
+    required this.controller,
     this.onChanged,
     required this.hint,
     this.onTap,

@@ -2,42 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:khatibalamyfluttertask/core/shared_component/news_item_card.dart';
+import 'package:khatibalamyfluttertask/core/utils/extensions/easy_sizing.dart';
 import 'package:khatibalamyfluttertask/core/utils/extensions/padding.dart';
 import 'package:khatibalamyfluttertask/core/utils/openInBrowser.dart';
-import 'package:khatibalamyfluttertask/domain/model/news_article.dart';
 import 'package:provider/provider.dart';
 
 import '../../feature_search/news_search_provider.dart';
+import '../constants/assets.dart';
 import '../shared_component/search_field.dart';
 import '../utils/date_and_time_formatter.dart';
 
-class MainLayout extends StatelessWidget {
+class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
 
   @override
+  State<MainLayout> createState() => _MainLayoutState();
+}
+
+class _MainLayoutState extends State<MainLayout> {
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = context.read<NewsProvider>();
+    _searchController = TextEditingController(text: provider.lastQuery);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<NewsProvider>(context);
+    final provider = context.watch<NewsProvider>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('News Now')),
       body: Column(
         children: [
           AppSearchField(
+            controller: _searchController,
             hint:
-                provider.lastQuery == ""
+                provider.lastQuery.isEmpty
                     ? 'Search News...'
-                    : "Previous Search: ${provider.lastQuery}",
-            onChanged: (value) => provider.searchNews(value),
-          ).paddingAll(12.r),
+                    : "last search keyword: ${provider.lastQuery}",
+            onChanged: provider.searchNews,
+          ).paddingSymmetric(horizontal: 12.r).paddingOnly(top: 12.h),
           Expanded(
             child:
                 provider.isLoading
                     ? const Center(child: CircularProgressIndicator())
+                    : provider.articles.isEmpty
+                    ? Center(
+                      child: Image.asset(Assets.Nodata).size(200.h, 200.w),
+                    )
                     : ListView.separated(
+                      padding: EdgeInsets.only(bottom: 12.h, top: 2.h),
                       itemCount: provider.articles.length,
                       itemBuilder: (context, index) {
-                        NewsArticle article = provider.articles[index];
-                        String? formattedDate = dateAndTimeFormatter(article.publishedAt).first;
+                        final article = provider.articles[index];
+                        final formattedDate =
+                            dateAndTimeFormatter(article.publishedAt).first;
 
                         return NewsItemCard(
                           imageUrl: article.urlToImage,
@@ -48,8 +70,7 @@ class MainLayout extends StatelessWidget {
                           onClick: () async => openInBrowser(article.url),
                         ).paddingSymmetric(horizontal: 12.w);
                       },
-                      separatorBuilder:
-                          (BuildContext context, int index) => Gap(12.h),
+                      separatorBuilder: (_, __) => Gap(12.h),
                     ),
           ),
         ],

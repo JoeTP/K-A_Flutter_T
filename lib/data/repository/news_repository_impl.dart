@@ -4,7 +4,7 @@ import '../../domain/repository/news_repository.dart';
 import '../local/news_local_datasource.dart';
 import '../remote/news_remote_datasource.dart';
 
-class NewsRepositoryImpl extends NewsRepository {
+class NewsRepositoryImpl implements NewsRepository {
   final NewsRemoteDataSource remoteDataSource;
   final NewsLocalDataSource localDataSource;
 
@@ -14,9 +14,8 @@ class NewsRepositoryImpl extends NewsRepository {
   });
 
   @override
-  Future<List<NewsArticle>> getHeadline() {
-    // TODO: implement getHeadline
-    throw UnimplementedError();
+  Future<List<NewsArticle>> getHeadline() async {
+    return await remoteDataSource.getHeadline();
   }
 
   @override

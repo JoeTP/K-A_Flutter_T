@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:khatibalamyfluttertask/domain/usecase/get_headlines_usecase.dart';
 
 import '../core/utils/debouncer.dart';
 import '../domain/model/news_article.dart';
@@ -12,6 +11,7 @@ class NewsProvider extends ChangeNotifier {
   final SearchNewsUseCase searchNewsUseCase;
   final GetCachedQueryUseCase getCachedQueryUseCase;
   final CacheQueryUseCase cacheQuery;
+  final GetHeadlinesUseCase getHeadlinesUseCase;
   final Debouncer debouncer = Debouncer(milliseconds: 500);
 
   List<NewsArticle> articles = [];
@@ -23,6 +23,7 @@ class NewsProvider extends ChangeNotifier {
     required this.searchNewsUseCase,
     required this.getCachedQueryUseCase,
     required this.cacheQuery,
+    required this.getHeadlinesUseCase,
   }) {
     _loadLastQuery();
   }
@@ -32,7 +33,21 @@ class NewsProvider extends ChangeNotifier {
     if (query != null && query.isNotEmpty) {
       lastQuery = query;
       searchNews(query, save: false);
+    } else {
+      loadHeadlines();
     }
+  }
+
+  void loadHeadlines() async {
+    isLoading = true;
+    notifyListeners();
+    try {
+      articles = await getHeadlinesUseCase(null);
+    } catch (e) {
+      errorMessage = e.toString();
+    }
+    isLoading = false;
+    notifyListeners();
   }
 
   void searchNews(String query, {bool save = true}) {
