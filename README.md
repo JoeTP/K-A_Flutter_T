@@ -1,16 +1,29 @@
-# khatibalamyfluttertask
+# Project Name
 
-A new Flutter project.
+A Flutter project built with a clean architecture approach, featuring responsive UI, smooth animations, and state management for a scalable and maintainable mobile application.
+
+## Dependencies Overview
+
+This project uses the following main packages:
+
+### Network
+- **[dio](https://pub.dev/packages/dio)** `^5.9.0` – A powerful HTTP client for Dart, used for making network requests and handling APIs.
+- **[url_launcher](https://pub.dev/packages/url_launcher)** `^6.3.2` – Opens URLs in the default browser, phone dialer, or email app.
+
+### Storage
+- **[shared_preferences](https://pub.dev/packages/shared_preferences)** `^2.5.3` – Stores small amounts of persistent data locally, such as user settings or tokens.
+
+### State Management
+- **[provider](https://pub.dev/packages/provider)** `^6.1.5` – Simple and efficient state management for Flutter apps.
+
+### UI & Design
+- **[flutter_screenutil](https://pub.dev/packages/flutter_screenutil)** `^5.9.3` – Makes UI responsive for different screen sizes and densities.
+- **[shimmer](https://pub.dev/packages/shimmer)** `^3.0.0` – Adds shimmering placeholder effects for loading states.
+- **[gap](https://pub.dev/packages/gap)** `^3.0.1` – Simplifies adding consistent spacing between widgets.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Clone the repository**
+   ```bash
+   git clone <your-repository-url>
+   cd <your-project-folder>
