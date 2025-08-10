@@ -11,6 +11,7 @@ abstract class AppTheme {
     primaryColor: AppColors.base,
     inputDecorationTheme: DefaultInputDecoration(),
     appBarTheme: DefaultAppBarTheme(),
+    scaffoldBackgroundColor: AppColors.lightGrey,
   );
 }
 
@@ -44,5 +45,7 @@ class DefaultInputDecoration extends InputDecorationTheme {
         focusedBorder: defaultBorderStyle,
         enabledBorder: unFocusedBorderStyle,
         hintStyle: TextStyle(color: AppColors.grey),
+        filled: true,
+        fillColor: AppColors.white,
       );
 }

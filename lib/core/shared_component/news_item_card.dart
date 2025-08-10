@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:khatibalamyfluttertask/core/config/theme/app_text_styles.dart';
 import 'package:khatibalamyfluttertask/core/constants/assets.dart';
+import 'package:khatibalamyfluttertask/core/utils/extensions/clipping.dart';
+import 'package:khatibalamyfluttertask/core/utils/extensions/easy_sizing.dart';
 
-import '../utils/date_and_time_formatter.dart';
+import 'network_image.dart';
 
 class NewsItemCard extends StatelessWidget {
   final String title;
@@ -24,101 +27,92 @@ class NewsItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? formattedDate = dateAndTimeFormatter(publishedAt).first;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.surfaceTint.withAlpha(20),
-            blurRadius: 5.r,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          InkWell(
-            borderRadius: BorderRadius.circular(12.r),
-            onTap: onClick,
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child:
-                      imageUrl != null
-                          ? Image.network(
-                            imageUrl!,
-                            width: 100.r,
-                            height: 100.r,
-                            fit: BoxFit.cover,
-                          )
-                          : Image.asset(
-                            Assets.Noimage,
-                            width: 100.r,
-                            height: 100.r,
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).colorScheme.surfaceTint.withAlpha(50),
+              blurRadius: 8.r,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12.r),
+          onTap: onClick,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  imageUrl != null
+                      ? EasyNetworkImage(
+                        imageUrl!,
+                        cacheSize: 100,
+                      ).clipOnly(topLeft: 12.r).size(100.h, 100.w)
+                      : Image.asset(Assets.Noimage, fit:  BoxFit.cover,).size(100.h, 100.w),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(10.r),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 16.h,
+                            child: Text(
+                              title,
+                              style: AppTextStyles.titleStyle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 20.h,
-                          child: Text(
-                            title,
-                            style: Theme.of(context).textTheme.titleMedium,
-                            maxLines: 1,
+                          Divider(height: 16.h),
+                          Text(
+                            description,
+                            style: AppTextStyles.descriptionStyle,
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        Divider(height: 16.h),
-                        Text(
-                          description,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(12.r),
+                ],
               ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 8.r),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    "Src: $sourceName",
-                    style: Theme.of(context).textTheme.labelSmall,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(12.r),
                   ),
                 ),
-                Text(
-                  formattedDate,
-                  style: Theme.of(context).textTheme.labelSmall,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 8.r),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Src: $sourceName",
+                        style: AppTextStyles.dateTimeStyle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      publishedAt,
+                      style: AppTextStyles.dateTimeStyle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

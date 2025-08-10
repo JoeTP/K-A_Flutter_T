@@ -1,38 +1,42 @@
-import 'package:khatibalamyfluttertask/data/model/source_dto.dart';
 
 import '../../domain/model/news_article.dart';
-
-// class NewsDto {
-//   final String? title;
-//   final String? description;
-//   final String? publishedAt;
-//   final SourceDto? source;
-//   final String? urlToImage;
-//   final String? url;
-//
-//   NewsDto({
-//     this.title,
-//     this.description,
-//     this.publishedAt,
-//     this.source,
-//     this.urlToImage,
-//     this.url,
-//   });
-// }
-
 
 class NewsArticleModel extends NewsArticle {
   NewsArticleModel({
     required String title,
     required String description,
-    required String urlToImage,
-  }) : super(title: title, description: description, urlToImage: urlToImage);
+    String? urlToImage,
+    required String url,
+    required String publishedAt,
+    required String sourceName,
+  }) : super(
+    title: title,
+    description: description,
+    urlToImage: urlToImage,
+    url: url,
+    publishedAt: publishedAt,
+    sourceName: sourceName,
+  );
 
   factory NewsArticleModel.fromJson(Map<String, dynamic> json) {
     return NewsArticleModel(
-      title: json['title'] ?? '',
-      description: json['description'] ?? '',
-      urlToImage: json['urlToImage'] ?? '',
+      title: json['title'] as String? ?? 'No title',
+      description: json['description'] as String? ?? 'No description',
+      urlToImage: json['urlToImage'] as String?,
+      url: json['url'] as String? ?? '',
+      publishedAt: json['publishedAt'] ,
+      sourceName: (json['source'] as Map<String, dynamic>?)?['name'] as String? ?? 'Unknown source',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'urlToImage': urlToImage,
+      'url': url,
+      'publishedAt': publishedAt,
+      'source': {'name': sourceName},
+    };
   }
 }
