@@ -12,6 +12,7 @@ import '../../data/remote/news_remote_datasource_impl.dart';
 import '../../data/repository/news_repository_impl.dart';
 import '../../domain/usecase/cache_query_usecase.dart';
 import '../../domain/usecase/get_cached_query_usecase.dart';
+import '../config/environment.dart';
 import '../network/dio_client.dart';
 import '../prefs/shared_preference_manager.dart';
 
@@ -37,7 +38,7 @@ abstract class Providers {
         create:
             (context) => NewsRemoteDataSourceImpl(
               dio: context.read<DioClient>().dio,
-              apiKey: const String.fromEnvironment(AppStrings.apiKey),
+              apiKey: Environment.apiKey,
             ),
       ),
 

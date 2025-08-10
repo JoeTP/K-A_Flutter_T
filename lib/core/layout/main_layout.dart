@@ -26,8 +26,8 @@ class MainLayout extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search News...',
+              decoration:  InputDecoration(
+                labelText: provider.lastQuery == "" ? 'Search News...' : "Previous Search: ${provider.lastQuery}",
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) => provider.searchNews(value),
