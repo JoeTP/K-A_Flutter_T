@@ -11,7 +11,7 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
   NewsRemoteDataSourceImpl({required this.dio, required this.apiKey});
 
   @override
-  Future<List<NewsArticleModel>> getNewsByQuery(String query) async {
+  Future<NewsArticleResponse> getNewsByQuery(String query) async {
     Map<String, String> queryParameters = {
       AppStrings.QUERY_KEY: query,
       AppStrings.API_KEY_KEY: apiKey,
@@ -26,9 +26,7 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        return (data['articles'] as List)
-            .map((json) => NewsArticleModel.fromJson(json))
-            .toList();
+        return NewsArticleResponse.fromJson(data);
       } else {
         throw Exception('Failed to fetch news');
       }

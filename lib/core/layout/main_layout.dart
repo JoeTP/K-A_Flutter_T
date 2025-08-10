@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:khatibalamyfluttertask/core/shared_component/default_snackbar.dart';
 import 'package:khatibalamyfluttertask/core/shared_component/news_item_card.dart';
 import 'package:khatibalamyfluttertask/core/utils/extensions/easy_sizing.dart';
 import 'package:khatibalamyfluttertask/core/utils/extensions/padding.dart';
@@ -32,6 +33,14 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<NewsProvider>();
+
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (provider.errorMessage.isNotEmpty) {
+        defaultSnackBar(context, provider.errorMessage);
+        provider.errorMessage = '';
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('News Now')),

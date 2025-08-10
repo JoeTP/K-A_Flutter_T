@@ -1,6 +1,23 @@
 
 import '../../domain/model/news_article.dart';
 
+class NewsArticleResponse {
+  final List<NewsArticleModel> articles;
+  final int totalResults;
+
+  NewsArticleResponse({
+    required this.articles,
+    required this.totalResults,
+  });
+
+  factory NewsArticleResponse.fromJson(Map<String, dynamic> json) {
+    return NewsArticleResponse(
+      articles: (json['articles'] as List).map((articleJson) => NewsArticleModel.fromJson(articleJson)).toList(),
+      totalResults: json['totalResults'] as int? ?? 0,
+    );
+  }
+}
+
 class NewsArticleModel extends NewsArticle {
   NewsArticleModel({
     required String title,

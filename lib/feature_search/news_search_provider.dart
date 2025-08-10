@@ -63,8 +63,14 @@ class NewsProvider extends ChangeNotifier {
       notifyListeners();
 
       try {
-        articles = await searchNewsUseCase(query);
+        final response = await searchNewsUseCase(query);
+        articles = response.articles;
         lastQuery = query;
+
+        if(response.totalResults > 100){
+          errorMessage = "cannot load more than 100 articles (free plan)";
+        }
+
         if (save) {
           await cacheQuery(query);
         }

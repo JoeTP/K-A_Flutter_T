@@ -1,3 +1,4 @@
+import 'package:khatibalamyfluttertask/data/model/news_article_model.dart';
 import 'package:khatibalamyfluttertask/domain/model/news_article.dart';
 
 import '../../domain/repository/news_repository.dart';
@@ -19,7 +20,7 @@ class NewsRepositoryImpl implements NewsRepository {
   }
 
   @override
-  Future<List<NewsArticle>> searchNews(String query) async {
+  Future<NewsArticleResponse> searchNews(String query) async {
     await localDataSource.cacheLastQuery(query);
     return await remoteDataSource.getNewsByQuery(query);
   }
